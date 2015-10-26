@@ -33,9 +33,6 @@
     "grunt-contrib-nodeunit": "^0.3.3",
     "grunt": "~0.4.5"
   },
-  "peerDependencies": {
-    "grunt": "~0.4.5"
-  },
   "keywords": [
     "gruntplugin"
   ]
