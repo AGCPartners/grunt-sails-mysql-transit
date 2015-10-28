@@ -17,7 +17,7 @@ var modelsConfig = require(basePath+'/config/models');
 var async = require('async');
 var prompt = require('prompt');
 var colors = require('colors');
-//var MysqlTransit = require('mysql-transit');
+var MysqlTransit = require('mysql-transit');
 
 var dropTempDbQueryTemplate = 'DROP DATABASE IF EXISTS `%s`;';
 var createTempDbQueryTemplate = 'CREATE DATABASE IF NOT EXISTS `%s`;';
@@ -103,8 +103,8 @@ module.exports = function(grunt) {
           sails.lift(sailsConfig, callback);
         },
         function(callback) {
-          // var mysqlTransit = new MysqlTransit(origDB, migrationDB, mysqlConfig, callback);
-          // mysqlTransit.transit(opts);
+          var mysqlTransit = new MysqlTransit(origDB, migrationDB, mysqlConfig, callback);
+          mysqlTransit.transit(opts);
         }
       ], done);
     });

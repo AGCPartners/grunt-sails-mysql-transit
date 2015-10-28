@@ -35,5 +35,8 @@
   },
   "keywords": [
     "gruntplugin"
-  ]
+  ],
+  "dependencies": {
+    "mysql-transit": "0.0.1"
+  }
 }
