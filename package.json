@@ -37,6 +37,7 @@
     "gruntplugin"
   ],
   "dependencies": {
+    "colors": "^1.1.2",
     "mysql-transit": "0.0.3",
     "prompt": "^0.2.14"
   }
