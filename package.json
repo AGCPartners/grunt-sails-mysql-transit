@@ -37,6 +37,6 @@
     "gruntplugin"
   ],
   "dependencies": {
-    "mysql-transit": "0.0.1"
+    "mysql-transit": "0.0.3"
   }
 }

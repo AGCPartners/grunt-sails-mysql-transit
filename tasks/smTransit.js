@@ -103,8 +103,8 @@ module.exports = function(grunt) {
           sails.lift(sailsConfig, callback);
         },
         function(callback) {
-          var mysqlTransit = new MysqlTransit(origDB, migrationDB, mysqlConfig, callback);
-          mysqlTransit.transit(opts);
+          var mysqlTransit = new MysqlTransit(origDB, migrationDB, mysqlConfig);
+          mysqlTransit.transit({}, callback);
         }
       ], done);
     });
