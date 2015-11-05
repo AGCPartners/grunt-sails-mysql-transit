@@ -90,19 +90,27 @@ module.exports = function(grunt) {
         function(callback) {
           connection.connect(callback);
         },
-        function(callback) {
+        function(err, callback) {
           var dropQuery = util.format(dropTempDbQueryTemplate, migrationDB);
-          connection.query(dropQuery, callback); 
+          connection.query(dropQuery, function(err, res) { 
+            if (err) callback(err);
+
+            callback(null, res);
+          }); 
         },
-        function(callback) {
+        function(err, callback) {
           var dbQuery = util.format(createTempDbQueryTemplate, migrationDB);
           connection.query(dbQuery, callback);
         },
-        function(callback) {
+        function(res, err, callback) {
           var sails = new Sails();
-          sails.lift(sailsConfig, callback);
+          sails.load(sailsConfig, function(err, server) {
+            if (err) callback(err);
+
+            callback(err, server);
+          });
         },
-        function(callback) {
+        function(err, callback) {
           var mysqlTransit = new MysqlTransit(origDB, migrationDB, mysqlConfig);
           mysqlTransit.transit({}, callback);
         }
