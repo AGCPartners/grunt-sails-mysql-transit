@@ -1,7 +1,7 @@
 {
   "name": "grunt-sails-mysql-transit",
   "description": "Grunt task for Sails Mysql migration tool",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "homepage": "https://github.com/AGCPartners/grunt-sails-mysql-transit",
   "author": {
     "name": "AGC Partners Ltd",
