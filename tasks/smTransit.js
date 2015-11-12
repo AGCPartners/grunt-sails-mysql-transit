@@ -33,6 +33,7 @@ module.exports = function(grunt) {
     var done = this.async();
     // get the env from the params or use the NODE_ENV
     var env = grunt.option('env') || process.env.NODE_ENV;
+    var interactive = grunt.option('interactive') || true;
     var envConfig = require(basePath+'/config/env/' + env);
     var envConnection =
       (envConfig.hasOwnProperty('models') && envConfig.models.hasOwnProperty('connection')) ?
@@ -112,7 +113,7 @@ module.exports = function(grunt) {
         },
         function(err, callback) {
           var mysqlTransit = new MysqlTransit(origDB, migrationDB, mysqlConfig);
-          mysqlTransit.transit({}, callback);
+          mysqlTransit.transit({interactive:interactive}, callback);
         }
       ], done);
     });
