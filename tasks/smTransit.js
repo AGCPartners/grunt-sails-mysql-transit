@@ -123,8 +123,6 @@ function runTransit(mysqlConfig, migrationDB, sailsConfig, origDB, done) {
       });
     },
     function(err, callback) {
-      console.log('origDB');
-      console.log(origDB);
       var mysqlTransit = new MysqlTransit(origDB, migrationDB, mysqlConfig);
       mysqlTransit.transit({interactive:interactive}, callback);
     }
