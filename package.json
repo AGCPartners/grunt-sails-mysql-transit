@@ -38,7 +38,7 @@
   ],
   "dependencies": {
     "colors": "^1.1.2",
-    "mysql-transit": "0.0.4",
+    "mysql-transit": "0.0.5",
     "prompt": "^0.2.14"
   }
 }
