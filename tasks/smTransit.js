@@ -33,7 +33,7 @@ module.exports = function(grunt) {
     var done = this.async();
     // get the env from the params or use the NODE_ENV
     var env = grunt.option('env') || process.env.NODE_ENV;
-    var interactive = grunt.option('interactive') || true;
+    var interactive = (grunt.option('interactive') !== undefined) ? grunt.option('interactive') : true;
     var envConfig = require(basePath+'/config/env/' + env);
     var envConnection =
       (envConfig.hasOwnProperty('models') && envConfig.models.hasOwnProperty('connection')) ?
@@ -70,52 +70,61 @@ module.exports = function(grunt) {
         migration: mysqlParams
       }
     };
-    // Some prompts and messages before it starts
-    prompt.message = "SailsJS + Sequelize migration tool by AGC Partners Ltd. <developers@agcparners.co.uk>".cyan;
-    prompt.delimiter = '\n';
-    prompt.start();
-    prompt.get({
-      properties: {
-        continue: {
-          description: "You're about to alter your database. It is strongly advised to create a backup before you proceed. Ready to go? (yes/no)".red,
-          default: 'yes',
-          pattern: /^(yes|no)$/i,
-          required: true
+
+    if (interactive !== false) {
+      // Some prompts and messages before it starts
+      prompt.message = "SailsJS + Sequelize migration tool by AGC Partners Ltd. <developers@agcparners.co.uk>".cyan;
+      prompt.delimiter = '\n';
+      prompt.start();
+      prompt.get({
+        properties: {
+          continue: {
+            description: "You're about to alter your database. It is strongly advised to create a backup before you proceed. Ready to go? (yes/no)".red,
+            default: 'yes',
+            pattern: /^(yes|no)$/i,
+            required: true
+          }
         }
-      }
-    }, function (err, result) {
-      if(result.continue.toLowerCase() === 'no') done();
+      }, function(err, result) {
+        if (result.continue.toLowerCase() === 'no') done();
 
-      var connection = mysql.createConnection(mysqlConfig);
-      async.waterfall([
-        function(callback) {
-          connection.connect(callback);
-        },
-        function(err, callback) {
-          var dropQuery = util.format(dropTempDbQueryTemplate, migrationDB);
-          connection.query(dropQuery, function(err, res) { 
-            if (err) callback(err);
-
-            callback(null, res);
-          }); 
-        },
-        function(err, callback) {
-          var dbQuery = util.format(createTempDbQueryTemplate, migrationDB);
-          connection.query(dbQuery, callback);
-        },
-        function(res, err, callback) {
-          var sails = new Sails();
-          sails.load(sailsConfig, function(err, server) {
-            if (err) callback(err);
-
-            callback(err, server);
-          });
-        },
-        function(err, callback) {
-          var mysqlTransit = new MysqlTransit(origDB, migrationDB, mysqlConfig);
-          mysqlTransit.transit({interactive:interactive}, callback);
-        }
-      ], done);
-    });
+        runTransit(mysqlConfig, migrationDB, sailsConfig, done);
+      });
+    } else {
+      runTransit(mysqlConfig, migrationDB, sailsConfig, done);
+    }
   });
 };
+
+function runTransit(mysqlConfig, migrationDB, sailsConfig, done) {
+  var connection = mysql.createConnection(mysqlConfig);
+  async.waterfall([
+    function(callback) {
+      connection.connect(callback);
+    },
+    function(err, callback) {
+      var dropQuery = util.format(dropTempDbQueryTemplate, migrationDB);
+      connection.query(dropQuery, function(err, res) {
+        if (err) callback(err);
+
+        callback(null, res);
+      });
+    },
+    function(err, callback) {
+      var dbQuery = util.format(createTempDbQueryTemplate, migrationDB);
+      connection.query(dbQuery, callback);
+    },
+    function(res, err, callback) {
+      var sails = new Sails();
+      sails.load(sailsConfig, function(err, server) {
+        if (err) callback(err);
+
+        callback(err, server);
+      });
+    },
+    function(err, callback) {
+      var mysqlTransit = new MysqlTransit(origDB, migrationDB, mysqlConfig);
+      mysqlTransit.transit({interactive:interactive}, callback);
+    }
+  ], done);
+}
