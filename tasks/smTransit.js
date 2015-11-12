@@ -88,15 +88,15 @@ module.exports = function(grunt) {
       }, function(err, result) {
         if (result.continue.toLowerCase() === 'no') done();
 
-        runTransit(mysqlConfig, migrationDB, sailsConfig, done);
+        runTransit(mysqlConfig, migrationDB, sailsConfig, origDB, done);
       });
     } else {
-      runTransit(mysqlConfig, migrationDB, sailsConfig, done);
+      runTransit(mysqlConfig, migrationDB, sailsConfig, origDB, done);
     }
   });
 };
 
-function runTransit(mysqlConfig, migrationDB, sailsConfig, done) {
+function runTransit(mysqlConfig, migrationDB, sailsConfig, origDB, done) {
   var connection = mysql.createConnection(mysqlConfig);
   async.waterfall([
     function(callback) {
