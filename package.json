@@ -34,7 +34,11 @@
     "grunt": "~0.4.5"
   },
   "keywords": [
-    "gruntplugin"
+    "grunt",
+    "mysql",
+    "mariadb",
+    "automigration",
+    "migration"
   ],
   "dependencies": {
     "colors": "^1.1.2",

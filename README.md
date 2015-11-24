@@ -1,5 +1,5 @@
 # grunt-sails-mysql-transit
-Grunt task for Sails MySQL migration tool
+Grunt task for Sails MySQL migration tool. With this task you'll be able to automigrate changes from your models to your existing mysql/mariadb database. It's developed and tested with sequelize ORM, but it should work with Waterline as well. For other frameworks/implementations please use the core package [mysql-transit](https://github.com/AGCPartners/mysql-transit).
 
 ### Install
 ```
