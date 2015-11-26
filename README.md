@@ -36,5 +36,8 @@ module.exports = function (grunt) {
 ### Usage
 
 ```
-grunt migrate
+grunt migrate [--interactive=true --env=NODE_ENV]
 ```
+
+### Optional params
+There are 2 optional parameters - interactive (deafault is true) and env (default is the enviroment variable NODE_ENV). If you set the interactive param to false, it will perform all the operations except deleting tables and fields. This is useful if you want to include the task in a deployment script, but you'll have to take care about the garbage yourself. The other param is the env, if you want to specify the environment on which you want to apply the changes. This means that you have custom config file for e.g. config/env/production.js where the production mysql connection params are stored.
